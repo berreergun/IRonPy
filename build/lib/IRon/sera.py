@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-from IRon import phi
+from iron import phi
 import pandas as pd
 
 def sera (trues, preds, phi_trues = None, ph = None, pl = False, m_name = "Model", step = 0.001,return_err = False) :
@@ -14,7 +14,7 @@ def sera (trues, preds, phi_trues = None, ph = None, pl = False, m_name = "Model
 
     if phi_trues is None :
        phi_trues = phi.phi(trues, ph)
-
+    trues = trues.values
     tbl = pd.DataFrame(
         {'trues': trues,
          'phi_trues': phi_trues,

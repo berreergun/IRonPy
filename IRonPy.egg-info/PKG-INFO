@@ -1,8 +1,8 @@
 Metadata-Version: 2.1
 Name: IRonPy
-Version: 0.3.7
+Version: 0.3.88
 Summary: IRon Package
-Home-page: https://github.com/gituser/test-tackage
+Home-page: https://github.com/berreergun/IRonPy
 Author: berre
 Author-email: berreergunn@gmail.com
 License: MIT
@@ -37,12 +37,12 @@ Installation
 
 <!-- You can install the last released version from [CRAN](https://CRAN.R-project.org) with: -->
 <!--``` {r, eval=FALSE} -->
-<!-- install.packages("IRon") -->
+<!-- install.packages("iron") -->
 <!-- ``` -->
 <!-- You can also install the latest development version from GitHub: -->
 <!-- ```{r, eval=FALSE} -->
 <!-- install.packages("devtools") -->
-<!-- devtools::install_github("nunompmoniz/IRon") -->
+<!-- devtools::install_github("nunompmoniz/iron") -->
 <!-- ``` -->
 To install from github use the following command lines:
 

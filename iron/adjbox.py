@@ -32,15 +32,15 @@ def mcComp (x, do_reflect, do_scale, eps1, eps2, maxit = 1000, trace_lev = 1):
     eps = [eps1, eps2]
     c_iter = [maxit, trace_lev]
     if sys.platform == "win32":
-        dir = os.path.dirname(sys.modules["IRon"].__file__)
+        dir = os.path.dirname(sys.modules["iron"].__file__)
         path = os.path.join(dir, "mc.dll")
         mc_func = cdll.LoadLibrary(path)
     elif sys.platform == "darwin":
-        dir = os.path.dirname(sys.modules["IRon"].__file__)
+        dir = os.path.dirname(sys.modules["iron"].__file__)
         path = os.path.join(dir, "mc_mac.so")
         mc_func = cdll.LoadLibrary(path)
     elif sys.platform == "linux":
-        dir = os.path.dirname(sys.modules["IRon"].__file__)
+        dir = os.path.dirname(sys.modules["iron"].__file__)
         path = os.path.join(dir, "mc_linux.so")
         mc_func = cdll.LoadLibrary(path)
 

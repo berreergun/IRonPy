@@ -252,15 +252,15 @@ def phi(y, phi_parms=None, only_phi=True):
    n = len(y)
 
    if sys.platform == "win32":
-       dir = os.path.dirname(sys.modules["IRon"].__file__)
+       dir = os.path.dirname(sys.modules["iron"].__file__)
        path = os.path.join(dir, "phi.dll")
        phi_c = cdll.LoadLibrary(path)
    elif  sys.platform == "darwin":
-       dir = os.path.dirname(sys.modules["IRon"].__file__)
+       dir = os.path.dirname(sys.modules["iron"].__file__)
        path = os.path.join(dir, "phi_mac.so")
        phi_c = cdll.LoadLibrary(path )
    elif  sys.platform == "linux":
-       dir = os.path.dirname(sys.modules["IRon"].__file__)
+       dir = os.path.dirname(sys.modules["iron"].__file__)
        path = os.path.join(dir, "phi_linux.so")
        phi_c = cdll.LoadLibrary(path)
 
@@ -287,7 +287,7 @@ def phi(y, phi_parms=None, only_phi=True):
 
 
 def run():
-    dir = os.path.dirname(sys.modules["IRon"].__file__)
+    dir = os.path.dirname(sys.modules["iron"].__file__)
     df = pd.read_csv(dir + "/data/dfs_fixed.csv")
     x = df["value"]
     x = x.to_list()

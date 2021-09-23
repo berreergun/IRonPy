@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-from IRon import phi
+from iron import phi
 import pandas as pd
 
 
@@ -23,7 +23,7 @@ import pandas as pd
 
 examples 
 
-dir = os.path.dirname(sys.modules["IRon"].__file__)
+dir = os.path.dirname(sys.modules["iron"].__file__)
 path = os.path.join(dir, "data/accel_data.csv")
 df = pd.read_csv(path)
 
@@ -69,7 +69,7 @@ y_pred = pd.DataFrame(
 
 
 #Calculate SERA
-from IRon import sera
+from iron import sera
 SERA = sera.sera(preds=y_pred,phi_trues=phis,trues=y_test)
 
 

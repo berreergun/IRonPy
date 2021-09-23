@@ -22,19 +22,11 @@ For windows python32 is needed.
 Installation
 ------------
 
-<!-- You can install the last released version from [CRAN](https://CRAN.R-project.org) with: -->
-<!--``` {r, eval=FALSE} -->
-<!-- install.packages("IRon") -->
-<!-- ``` -->
-<!-- You can also install the latest development version from GitHub: -->
-<!-- ```{r, eval=FALSE} -->
-<!-- install.packages("devtools") -->
-<!-- devtools::install_github("nunompmoniz/IRon") -->
-<!-- ``` -->
+
 To install from github use the following command lines:
 
 ``` r
-pip install IRon  # You need to install this package!
+pip install IRonPy  
 
 ```
 
