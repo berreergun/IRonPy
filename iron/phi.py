@@ -228,11 +228,15 @@ def phi2double(phi_parms):
 
  Obtain the relevance of data points
 
-@description The phi function retrieves the relevance value of the values in a target variable. It does so by resorting to the Piecewise Cubic Hermitate Interpolation Polynomial method for interpolating over a set of maximum and minimum relevance points. The notion of relevance is associated with rarity.Nonetheless, this notion may depend on the domain experts knowledge
+@description The phi function retrieves the relevance value of the values in a target variable.
+It does so by resorting to the Piecewise Cubic Hermitate Interpolation Polynomial method for interpolating over 
+a set of maximum and minimum relevance points. The notion of relevance is associated with rarity.
+Nonetheless, this notion may depend on the domain experts knowledge
 
 @param y The target variable of a given data set
 @param phi_parms The relevance function providing the data points where the pairs of values-relevance are known
-@param only_phi Boolean (default True) to return either solely the relevance values or the full data structure with the first and second derivative the interpolated values
+@param only_phi Boolean (default True) to return either solely the relevance values or the full data structure with the
+first and second derivative the interpolated values
 
 @return A vector or dictionary with the relevance values of a given target variable
 
