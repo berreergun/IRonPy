@@ -1,7 +1,7 @@
 Package: IRon
 Type: Package
 Title: Imbalanced Regression Framework
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(person("Rita", "P. Ribeiro", email = "rpribeiro@dcc.fc.up.pt",
                                         role = c("aut", "cre")),
            person("Nuno", "Moniz", email = "nmmoniz@inesctec.pt",

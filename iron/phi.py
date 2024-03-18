@@ -8,6 +8,7 @@ from numpy import double
 from numpy.ctypeslib import ndpointer
 from sklearn.model_selection import train_test_split
 from iron import adjbox
+import platform
 
 from ctypes import *
 phiMethods = ["extremes","range"]
@@ -176,18 +177,19 @@ def phi_range(y, control_pts) :
       control_pts = np.reshape(np.array(control_pts["control_pts"]),(control_pts["npts"],int(len(control_pts["control_pts"])/control_pts["npts"])))
 
   if (type(control_pts) is not np.ndarray) or (control_pts is None) or (np.shape(control_pts)[1] > 3) or (np.shape(control_pts)[1] < 2):
-       sys.exit('The control.pts must be given as a matrix in the form: \n < x, y, m > or, alternatively, < x, y >')
-
+    #    sys.exit('The control.pts must be given as a matrix in the form: \n < x, y, m > or, alternatively, < x, y >')
+    raise ValueError('The control.pts must be given as a matrix in the form: \n < x, y, m > or, alternatively, < x, y >')
   npts = len(control_pts)
   dx = control_pts[1:,0] - control_pts[0:(npts-1),0]
 
 
   if(None  in dx) or (0 in dx ) :
-    sys.exit("'x' must be *strictly* increasing (non - NA)")
+    # sys.exit("'x' must be *strictly* increasing (non - NA)")
+    raise ValueError("'x' must be *strictly* increasing (non - NA)")
 
   if (any(x>1 for x in control_pts[:,1]))  or  any(x<0 for x in control_pts[:,1]) :
-    sys.exit("phi relevance function maps values only in [0,1]")
-
+    # sys.exit("phi relevance function maps values only in [0,1]")
+    raise ValueError("phi relevance function maps values only in [0,1]")
 
   control_pts = control_pts[np.argsort(control_pts[:, 0])]
 
@@ -259,9 +261,14 @@ def phi(y, phi_parms=None, only_phi=True):
    n = len(y)
 
    if sys.platform == "win32":
-       dir = os.path.dirname(sys.modules["iron"].__file__)
-       path = os.path.join(dir, "phi.dll")
-       phi_c = cdll.LoadLibrary(path)
+        if platform.architecture()[0] == '64bit':
+            dir = os.path.dirname(sys.modules["iron"].__file__)
+            path = os.path.join(dir, "phi64.dll")
+            phi_c = cdll.LoadLibrary(path)
+        else:
+            dir = os.path.dirname(sys.modules["iron"].__file__)
+            path = os.path.join(dir, "phi.dll")
+            phi_c = cdll.LoadLibrary(path)
    elif  sys.platform == "darwin":
        dir = os.path.dirname(sys.modules["iron"].__file__)
        path = os.path.join(dir, "phi_mac.so")
@@ -271,26 +278,23 @@ def phi(y, phi_parms=None, only_phi=True):
        path = os.path.join(dir, "phi_linux.so")
        phi_c = cdll.LoadLibrary(path)
 
-   try:
-       py2phi = phi_c.py2phi
-       py2phi.restype = None
-       py2phi.argtypes = [ctypes.c_size_t,
-                          ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
-                          ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
-                          ndpointer(ctypes.c_double, flags="C_CONTIGUOUS")]
 
-       y_phi_all = np.empty((3 * n))
-       py2phi(n, y.values, phi2double(phi_parms), y_phi_all)
-       phis = {"y_phi": y_phi_all[0:n], "yd_phi": y_phi_all[n:2 * n], "ydd_phi": y_phi_all[2 * n:3 * n]}
+   py2phi = phi_c.py2phi
+   py2phi.restype = None
+   py2phi.argtypes = [ctypes.c_size_t,
+                        ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
+                        ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
+                        ndpointer(ctypes.c_double, flags="C_CONTIGUOUS")]
 
-       if (only_phi):
-           return phis["y_phi"]
-       else:
-           return phis
-   except:
-       print('OS %s not recognized, Only win32, macos or linux' % (sys.platform))
+   y_phi_all = np.empty((3 * n))
+   py2phi(n, y.values, phi2double(phi_parms), y_phi_all)
+   phis = {"y_phi": y_phi_all[0:n], "yd_phi": y_phi_all[n:2 * n], "ydd_phi": y_phi_all[2 * n:3 * n]}
 
-
+   if (only_phi):
+       return phis["y_phi"]
+   else:
+       return phis
+   
 
 #Auxiliary function
 def boxplot(x):
@@ -302,7 +306,6 @@ def boxplot(x):
     upper_whisker = x[x <= upper_quartile + 1.5 * iqr].max()
     lower_whisker = x[x >= lower_quartile - 1.5 * iqr].min()
     return {"lower_whisker":lower_whisker,"upper_whisker":upper_whisker,"median":median}
-
 
 
 #Example run

@@ -6,18 +6,25 @@ import ctypes
 from numpy import double
 from numpy.ctypeslib import ndpointer
 import numpy as np
-def fivenum(v):
-    """Returns Tukey's five number summary (minimum, lower-hinge, median, upper-hinge, maximum) for the input vector, a list or array of numbers based on 1.5 times the interquartile distance"""
-    from numpy import percentile
-    from scipy.stats import scoreatpercentile
-    try:
-        np.sum(v)
-    except TypeError:
-        print('Error: you must provide a list or array of only numbers')
-    md = np.median(v)
-    quartiles = percentile(v, [25, 50, 75])
-    return np.min(v),quartiles[0] , md,quartiles[2] , np.max(v),
+import platform
+# def fivenum(v):
+#     """Returns Tukey's five number summary (minimum, lower-hinge, median, upper-hinge, maximum) for the input vector, a list or array of numbers based on 1.5 times the interquartile distance"""
+#     from numpy import percentile
+#     from scipy.stats import scoreatpercentile
+#     try:
+#         np.sum(v)
+#     except TypeError:
+#         print('Error: you must provide a list or array of only numbers')
+#     md = np.median(v)
+#     quartiles = percentile(v, [25, 50, 75])
+#     return np.min(v),quartiles[0] , md,quartiles[2] , np.max(v),
 
+def fivenum(v):
+    v = np.sort(v)
+    n = len(v)
+    n4 = np.floor((n+3)/2) / 2
+    d = [0, n4-1, (n+1)/2-1, n-n4, n-1]
+    return 0.5 * (v[np.floor(d).astype(int)] + v[np.ceil(d).astype(int)])
 
 
 def mcComp (x, do_reflect, do_scale, eps1, eps2, maxit = 1000, trace_lev = 1):
@@ -32,9 +39,14 @@ def mcComp (x, do_reflect, do_scale, eps1, eps2, maxit = 1000, trace_lev = 1):
     eps = [eps1, eps2]
     c_iter = [maxit, trace_lev]
     if sys.platform == "win32":
-        dir = os.path.dirname(sys.modules["iron"].__file__)
-        path = os.path.join(dir, "mc.dll")
-        mc_func = cdll.LoadLibrary(path)
+        if platform.architecture()[0] == '64bit':
+            dir = os.path.dirname(sys.modules["iron"].__file__)
+            path = os.path.join(dir, "mc64.dll")
+            mc_func = cdll.LoadLibrary(path)
+        else:
+            dir = os.path.dirname(sys.modules["iron"].__file__)
+            path = os.path.join(dir, "mc.dll")
+            mc_func = cdll.LoadLibrary(path)
     elif sys.platform == "darwin":
         dir = os.path.dirname(sys.modules["iron"].__file__)
         path = os.path.join(dir, "mc_mac.so")
