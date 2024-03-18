@@ -6,6 +6,7 @@ import ctypes
 from numpy import double
 from numpy.ctypeslib import ndpointer
 import numpy as np
+import platform
 def fivenum(v):
     """Returns Tukey's five number summary (minimum, lower-hinge, median, upper-hinge, maximum) for the input vector, a list or array of numbers based on 1.5 times the interquartile distance"""
     from numpy import percentile
@@ -32,9 +33,14 @@ def mcComp (x, do_reflect, do_scale, eps1, eps2, maxit = 1000, trace_lev = 1):
     eps = [eps1, eps2]
     c_iter = [maxit, trace_lev]
     if sys.platform == "win32":
-        dir = os.path.dirname(sys.modules["iron"].__file__)
-        path = os.path.join(dir, "mc.dll")
-        mc_func = cdll.LoadLibrary(path)
+        if platform.architecture()[0] == '64bit':
+            dir = os.path.dirname(sys.modules["iron"].__file__)
+            path = os.path.join(dir, "mc64.dll")
+            mc_func = cdll.LoadLibrary(path)
+        else:
+            dir = os.path.dirname(sys.modules["iron"].__file__)
+            path = os.path.join(dir, "mc.dll")
+            mc_func = cdll.LoadLibrary(path)
     elif sys.platform == "darwin":
         dir = os.path.dirname(sys.modules["iron"].__file__)
         path = os.path.join(dir, "mc_mac.so")
